@@ -1,21 +1,26 @@
 package com.banreservas.dtos;
 
+import com.banreservas.utils.RegexConstants;
 import io.smallrye.common.constraint.NotNull;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 
 public class ClientCreationRequestDto {
     @NotNull
+    @Pattern(regexp = RegexConstants.JUST_LETTERS, message = "El nombre contiene un formato invalido")
     @NotBlank(message = "El firstName no puede estar en blanco")
     public String firstName;
 
     public String middleName;
 
     @NotNull
+    @Pattern(regexp = RegexConstants.JUST_LETTERS, message = "El nombre contiene un formato invalido")
     @NotBlank(message = "El lastName no puede estar en blanco")
     public String lastName;
 
+    @Pattern(regexp = RegexConstants.JUST_LETTERS, message = "El nombre contiene un formato invalido")
     public String secondSurname;
 
     @NotNull
@@ -29,6 +34,7 @@ public class ClientCreationRequestDto {
 
     @NotNull
     @NotBlank(message = "El phone no puede estar en blanco")
+    @Pattern(regexp = RegexConstants.JUST_NUMBERS, message = "El phone contiene un formato invalido")
     @Length(min = 10, max = 10, message = "El telefono se encuentra incorrecto")
     public String phone;
 

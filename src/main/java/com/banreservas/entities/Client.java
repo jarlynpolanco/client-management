@@ -2,9 +2,14 @@ package com.banreservas.entities;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class Client extends PanacheEntity {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long id;
     private String firstName;
     private String middleName;
     private String lastName;
