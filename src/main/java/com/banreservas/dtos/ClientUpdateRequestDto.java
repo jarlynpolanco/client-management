@@ -9,6 +9,7 @@ public class ClientUpdateRequestDto {
     @Email(message = "Debe enviar un email valido")
     public String email;
 
+    @Length(min = 2, max = 80)
     public String address;
 
     @Length(min = 10, max = 10, message = "El telefono se encuentra incorrecto")

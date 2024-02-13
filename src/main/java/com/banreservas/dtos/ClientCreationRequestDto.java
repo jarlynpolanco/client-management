@@ -10,18 +10,22 @@ import org.hibernate.validator.constraints.Length;
 public class ClientCreationRequestDto {
     @NotNull
     @Pattern(regexp = RegexConstants.JUST_LETTERS, message = "El nombre contiene un formato invalido")
+    @Length(min = 2, max = 30)
     @NotBlank(message = "El firstName no puede estar en blanco")
     public String firstName;
 
     @Pattern(regexp = RegexConstants.JUST_LETTERS, message = "El nombre contiene un formato invalido")
+    @Length(min = 2, max = 30)
     public String middleName;
 
     @NotNull
     @Pattern(regexp = RegexConstants.JUST_LETTERS_WITH_SPACES, message = "El nombre contiene un formato invalido")
+    @Length(min = 2, max = 30)
     @NotBlank(message = "El lastName no puede estar en blanco")
     public String lastName;
 
     @Pattern(regexp = RegexConstants.JUST_LETTERS_WITH_SPACES, message = "El nombre contiene un formato invalido")
+    @Length(min = 2, max = 30)
     public String secondSurname;
 
     @NotNull
@@ -31,6 +35,7 @@ public class ClientCreationRequestDto {
 
     @NotNull
     @NotBlank(message = "El address no puede estar en blanco")
+    @Length(min = 2, max = 80)
     public String address;
 
     @NotNull
