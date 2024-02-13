@@ -16,5 +16,6 @@ public class ClientUpdateRequestDto {
     public String phone;
 
     @Length(min = 2, max = 2, message = "El codigo de pais se encuentra incorrecto")
+    @Pattern(regexp = RegexConstants.JUST_LETTERS, message = "El country contiene un formato invalido")
     public String country;
 }

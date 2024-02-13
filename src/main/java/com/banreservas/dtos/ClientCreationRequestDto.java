@@ -13,14 +13,15 @@ public class ClientCreationRequestDto {
     @NotBlank(message = "El firstName no puede estar en blanco")
     public String firstName;
 
+    @Pattern(regexp = RegexConstants.JUST_LETTERS, message = "El nombre contiene un formato invalido")
     public String middleName;
 
     @NotNull
-    @Pattern(regexp = RegexConstants.JUST_LETTERS, message = "El nombre contiene un formato invalido")
+    @Pattern(regexp = RegexConstants.JUST_LETTERS_WITH_SPACES, message = "El nombre contiene un formato invalido")
     @NotBlank(message = "El lastName no puede estar en blanco")
     public String lastName;
 
-    @Pattern(regexp = RegexConstants.JUST_LETTERS, message = "El nombre contiene un formato invalido")
+    @Pattern(regexp = RegexConstants.JUST_LETTERS_WITH_SPACES, message = "El nombre contiene un formato invalido")
     public String secondSurname;
 
     @NotNull
@@ -40,6 +41,7 @@ public class ClientCreationRequestDto {
 
     @NotNull
     @NotBlank(message = "El country no puede estar en blanco")
+    @Pattern(regexp = RegexConstants.JUST_LETTERS, message = "El country contiene un formato invalido")
     @Length(min = 2, max = 2, message = "El codigo de pais se encuentra incorrecto")
     public String country;
 }
