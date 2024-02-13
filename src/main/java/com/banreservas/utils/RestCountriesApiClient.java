@@ -19,7 +19,7 @@ public class RestCountriesApiClient {
     @ConfigProperty(name = "rest.countries.api.url")
     String restCountriesApiUrl;
 
-    public String getDemonymByCountryCode(String countryCode) throws Exception {
+    public String getDemonymByCountryCode(final String countryCode) throws Exception {
         HttpClient httpClient = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
