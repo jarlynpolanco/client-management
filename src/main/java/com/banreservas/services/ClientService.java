@@ -4,6 +4,7 @@ import com.banreservas.dtos.ClientCreationRequestDto;
 import com.banreservas.dtos.ClientResponseDto;
 import com.banreservas.dtos.ClientUpdateRequestDto;
 import com.banreservas.entities.Client;
+import com.banreservas.mappers.ClientMapper;
 import com.banreservas.repositories.ClientRepository;
 import com.banreservas.utils.RestCountriesApiClient;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -23,7 +24,7 @@ public class ClientService {
 
     @Transactional
     public ClientResponseDto createClient(final ClientCreationRequestDto clientCreationRequestDto) {
-        Client client = mapClientDtoToEntity(clientCreationRequestDto);
+        Client client = ClientMapper.mapClientDtoToEntity(clientCreationRequestDto);
         try {
             client.setCountry(clientCreationRequestDto.country.toUpperCase());
             client.setDemonym(restCountriesApiClient.getDemonymByCountryCode(client.getCountry()));
@@ -31,12 +32,12 @@ public class ClientService {
             throw new RuntimeException(e);
         }
         client.persist();
-        return mapClientToDto(client);
+        return ClientMapper.mapClientToDto(client);
     }
 
     public List<ClientResponseDto> getAllClients() {
         List<Client> clients = clientRepository.listAll();
-        return mapClientsToDtos(clients);
+        return ClientMapper.mapClientsToDtos(clients);
     }
 
     public List<ClientResponseDto> getClientsByCountry(final String country) {
@@ -44,11 +45,11 @@ public class ClientService {
             throw new BadRequestException("La country enviada no es valida");
         }
         List<Client> clients = clientRepository.list("country", country.toUpperCase());
-        return mapClientsToDtos(clients);
+        return ClientMapper.mapClientsToDtos(clients);
     }
 
     public ClientResponseDto getClientById(final Long id) {
-        return mapClientToDto(getClient(id));
+        return ClientMapper.mapClientToDto(getClient(id));
     }
 
     @Transactional
@@ -78,38 +79,6 @@ public class ClientService {
         return client;
     }
 
-
-    private List<ClientResponseDto> mapClientsToDtos(final List<Client> clients) {
-        return clients.stream().map(this::mapClientToDto).toList();
-    }
-
-    private Client mapClientDtoToEntity(final ClientCreationRequestDto clientCreationRequestDto) {
-        Client client = new Client();
-        client.setFirstName(clientCreationRequestDto.firstName);
-        client.setMiddleName(clientCreationRequestDto.middleName);
-        client.setLastName(clientCreationRequestDto.lastName);
-        client.setSecondSurname(clientCreationRequestDto.secondSurname);
-        client.setEmail(clientCreationRequestDto.email);
-        client.setAddress(clientCreationRequestDto.address);
-        client.setPhone(clientCreationRequestDto.phone);
-        client.setCountry(clientCreationRequestDto.country);
-        return client;
-    }
-
-    private ClientResponseDto mapClientToDto(final Client client) {
-        ClientResponseDto clientResponseDto = new ClientResponseDto();
-        clientResponseDto.Id = client.id;
-        clientResponseDto.firstName = client.getFirstName();
-        clientResponseDto.middleName = client.getMiddleName();
-        clientResponseDto.lastName = client.getLastName();
-        clientResponseDto.secondSurname = client.getSecondSurname();
-        clientResponseDto.email = client.getEmail();
-        clientResponseDto.address = client.getAddress();
-        clientResponseDto.phone = client.getPhone();
-        clientResponseDto.country = client.getCountry();
-        clientResponseDto.demonym = client.getDemonym();
-        return clientResponseDto;
-    }
 
     private String stringIsNullOrEmptyValidation(final String newValue, final String oldValue) {
         if(newValue == null || newValue.isEmpty()) {
