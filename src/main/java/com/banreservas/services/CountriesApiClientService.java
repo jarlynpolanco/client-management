@@ -1,4 +1,4 @@
-package com.banreservas.utils;
+package com.banreservas.services;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,7 +15,7 @@ import java.net.http.HttpResponse;
 
 @Named
 @ApplicationScoped
-public class RestCountriesApiClient {
+public class CountriesApiClientService {
     @ConfigProperty(name = "rest.countries.api.url")
     String restCountriesApiUrl;
 

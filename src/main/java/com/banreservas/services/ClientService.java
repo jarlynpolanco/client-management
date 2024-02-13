@@ -4,9 +4,9 @@ import com.banreservas.dtos.ClientCreationRequestDto;
 import com.banreservas.dtos.ClientResponseDto;
 import com.banreservas.dtos.ClientUpdateRequestDto;
 import com.banreservas.entities.Client;
-import com.banreservas.mappers.ClientMapper;
+import com.banreservas.utils.StringUtils;
+import com.banreservas.utils.mappers.ClientMapper;
 import com.banreservas.repositories.ClientRepository;
-import com.banreservas.utils.RestCountriesApiClient;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -20,14 +20,14 @@ public class ClientService {
     ClientRepository clientRepository;
 
     @Inject
-    RestCountriesApiClient restCountriesApiClient;
+    CountriesApiClientService countriesApiClientService;
 
     @Transactional
     public ClientResponseDto createClient(final ClientCreationRequestDto clientCreationRequestDto) {
         Client client = ClientMapper.mapClientDtoToEntity(clientCreationRequestDto);
         try {
             client.setCountry(clientCreationRequestDto.country.toUpperCase());
-            client.setDemonym(restCountriesApiClient.getDemonymByCountryCode(client.getCountry()));
+            client.setDemonym(countriesApiClientService.getDemonymByCountryCode(client.getCountry()));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -41,9 +41,6 @@ public class ClientService {
     }
 
     public List<ClientResponseDto> getClientsByCountry(final String country) {
-        if(country == null || country.length() != 2) {
-            throw new BadRequestException("La country enviada no es valida");
-        }
         List<Client> clients = clientRepository.list("country", country.toUpperCase());
         return ClientMapper.mapClientsToDtos(clients);
     }
@@ -55,12 +52,12 @@ public class ClientService {
     @Transactional
     public void updateClient(final Long id, final ClientUpdateRequestDto clientUpdateRequestDto) {
         Client client = getClient(id);
-        client.setEmail(stringIsNullOrEmptyValidation(clientUpdateRequestDto.email, client.getEmail()));
-        client.setAddress(stringIsNullOrEmptyValidation(clientUpdateRequestDto.address, client.getAddress()));
-        client.setPhone(stringIsNullOrEmptyValidation(clientUpdateRequestDto.phone, client.getPhone()));
-        client.setCountry(stringIsNullOrEmptyValidation(clientUpdateRequestDto.country, client.getCountry()).toUpperCase());
+        client.setEmail(StringUtils.stringIsNullOrEmptyValidation(clientUpdateRequestDto.email, client.getEmail()));
+        client.setAddress(StringUtils.stringIsNullOrEmptyValidation(clientUpdateRequestDto.address, client.getAddress()));
+        client.setPhone(StringUtils.stringIsNullOrEmptyValidation(clientUpdateRequestDto.phone, client.getPhone()));
+        client.setCountry(StringUtils.stringIsNullOrEmptyValidation(clientUpdateRequestDto.country, client.getCountry()).toUpperCase());
         try {
-            client.setDemonym(restCountriesApiClient.getDemonymByCountryCode(client.getCountry()));
+            client.setDemonym(countriesApiClientService.getDemonymByCountryCode(client.getCountry()));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -74,17 +71,8 @@ public class ClientService {
     private Client getClient(final Long id) {
         Client client = clientRepository.findById(id);
         if(client == null) {
-            throw new BadRequestException("El cliente: "+ id + " no existe");
+            throw new BadRequestException("El cliente: "+ id + " no existe.");
         }
         return client;
-    }
-
-
-    private String stringIsNullOrEmptyValidation(final String newValue, final String oldValue) {
-        if(newValue == null || newValue.isEmpty()) {
-            return oldValue;
-        } else {
-            return newValue;
-        }
     }
 }

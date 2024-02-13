@@ -9,44 +9,44 @@ import org.hibernate.validator.constraints.Length;
 
 public class ClientCreationRequestDto {
     @NotNull
-    @Pattern(regexp = RegexConstants.JUST_LETTERS, message = "El nombre contiene un formato invalido")
+    @Pattern(regexp = RegexConstants.JUST_LETTERS, message = "El nombre contiene un formato invalido.")
     @Length(min = 2, max = 30)
-    @NotBlank(message = "El firstName no puede estar en blanco")
+    @NotBlank(message = "El firstName no puede estar en blanco.")
     public String firstName;
 
-    @Pattern(regexp = RegexConstants.JUST_LETTERS, message = "El nombre contiene un formato invalido")
+    @Pattern(regexp = RegexConstants.JUST_LETTERS, message = "El nombre contiene un formato invalido.")
     @Length(min = 2, max = 30)
     public String middleName;
 
     @NotNull
-    @Pattern(regexp = RegexConstants.JUST_LETTERS_WITH_SPACES, message = "El nombre contiene un formato invalido")
+    @Pattern(regexp = RegexConstants.JUST_LETTERS_WITH_SPACES, message = "El nombre contiene un formato invalido.")
     @Length(min = 2, max = 30)
-    @NotBlank(message = "El lastName no puede estar en blanco")
+    @NotBlank(message = "El lastName no puede estar en blanco.")
     public String lastName;
 
-    @Pattern(regexp = RegexConstants.JUST_LETTERS_WITH_SPACES, message = "El nombre contiene un formato invalido")
+    @Pattern(regexp = RegexConstants.JUST_LETTERS_WITH_SPACES, message = "El nombre contiene un formato invalido.")
     @Length(min = 2, max = 30)
     public String secondSurname;
 
     @NotNull
-    @NotBlank(message = "El email no puede estar en blanco")
-    @Email(message = "Debe enviar un email valido")
+    @NotBlank(message = "El email no puede estar en blanco.")
+    @Email(message = "Debe enviar un email valido.")
     public String email;
 
     @NotNull
-    @NotBlank(message = "El address no puede estar en blanco")
+    @NotBlank(message = "El address no puede estar en blanco.")
     @Length(min = 2, max = 80)
     public String address;
 
     @NotNull
-    @NotBlank(message = "El phone no puede estar en blanco")
-    @Pattern(regexp = RegexConstants.JUST_NUMBERS, message = "El phone contiene un formato invalido")
-    @Length(min = 10, max = 10, message = "El telefono se encuentra incorrecto")
+    @NotBlank(message = "El phone no puede estar en blanco.")
+    @Pattern(regexp = RegexConstants.JUST_NUMBERS, message = "El phone contiene un formato invalido.")
+    @Length(min = 10, max = 10, message = "El telefono se encuentra incorrecto.")
     public String phone;
 
     @NotNull
-    @NotBlank(message = "El country no puede estar en blanco")
-    @Pattern(regexp = RegexConstants.JUST_LETTERS, message = "El country contiene un formato invalido")
-    @Length(min = 2, max = 2, message = "El codigo de pais se encuentra incorrecto")
+    @NotBlank(message = "El country no puede estar en blanco.")
+    @Pattern(regexp = RegexConstants.JUST_LETTERS, message = "El country contiene un formato invalido.")
+    @Length(min = 2, max = 2, message = "El codigo de pais se encuentra incorrecto.")
     public String country;
 }

@@ -1,4 +1,4 @@
-package com.banreservas.mappers;
+package com.banreservas.utils.mappers;
 
 import com.banreservas.dtos.ClientCreationRequestDto;
 import com.banreservas.dtos.ClientResponseDto;
@@ -7,6 +7,9 @@ import com.banreservas.entities.Client;
 import java.util.List;
 
 public class ClientMapper {
+    private ClientMapper() {
+    }
+
     public static Client mapClientDtoToEntity(final ClientCreationRequestDto clientCreationRequestDto) {
         Client client = new Client();
         client.setFirstName(clientCreationRequestDto.firstName);

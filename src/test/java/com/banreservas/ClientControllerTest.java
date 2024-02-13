@@ -13,6 +13,8 @@ import static org.hamcrest.number.OrderingComparison.greaterThanOrEqualTo;
 
 @QuarkusTest
 public class ClientControllerTest {
+    private final String clientManagementApi = "/api/clients";
+
     @Test
     @Order(1)
     public void testCreateClientWithRequiredDataSuccessfully() {
@@ -20,7 +22,7 @@ public class ClientControllerTest {
                 .contentType(ContentType.JSON)
                 .body("{\"firstName\": \"Jarlyn\", \"lastName\": \"Polanco\",\"email\": \"jarlynpolanco@gmail.com\", \"address\": \"c/oval 2 #6\", \"phone\": \"8492832210\", \"country\": \"DO\"}")
                 .when()
-                .post("/api/clients/create")
+                .post(this.clientManagementApi)
                 .then()
                 .statusCode(HttpResponseCodes.SC_CREATED);
     }
@@ -32,31 +34,29 @@ public class ClientControllerTest {
                 .contentType(ContentType.JSON)
                 .body("{\"firstName\": \"Pedro\", \"lastName\": \"Perez\", \"middleName\": \"Hugo\", \"secondSurname\": \"Urbaez\",\"email\": \"pedroperez@gmail.com\", \"address\": \"c/Duarte #21\", \"phone\": \"8092201111\", \"country\": \"DO\"}")
                 .when()
-                .post("/api/clients/create")
+                .post(this.clientManagementApi)
                 .then()
                 .statusCode(HttpResponseCodes.SC_CREATED);
     }
 
     @Test
-    @Order(2)
     public void testCreateClientWithNumbersInNameAndLastNameBadRequest() {
         given()
                 .contentType(ContentType.JSON)
                 .body("{\"firstName\": \"P3dro\", \"lastName\": \"P3rez\", \"middleName\": \"Hugo\", \"secondSurname\": \"Urbaez\",\"email\": \"pedroperez@gmail.com\", \"address\": \"c/Duarte #21\", \"phone\": \"8092201111\", \"country\": \"DO\"}")
                 .when()
-                .post("/api/clients/create")
+                .post(this.clientManagementApi)
                 .then()
                 .statusCode(HttpResponseCodes.SC_BAD_REQUEST);
     }
 
     @Test
-    @Order(2)
     public void testCreateClientWithWrongEmailBadRequest() {
         given()
                 .contentType(ContentType.JSON)
                 .body("{\"firstName\": \"P3dro\", \"lastName\": \"P3rez\", \"middleName\": \"Hugo\", \"secondSurname\": \"Urbaez\",\"email\": \"pedroperez.com\", \"address\": \"c/Duarte #21\", \"phone\": \"8092201111\", \"country\": \"DO\"}")
                 .when()
-                .post("/api/clients/create")
+                .post(this.clientManagementApi)
                 .then()
                 .statusCode(HttpResponseCodes.SC_BAD_REQUEST);
     }
@@ -67,7 +67,7 @@ public class ClientControllerTest {
                 .contentType(ContentType.JSON)
                 .body("{\"firstName\": \"Jarlyn\", \"email\": \"jarlynpolanco@gmail.com\", \"address\": \"c/oval 2 #6\", \"phone\": \"849-283-2210\", \"country\": \"DO\"}")
                 .when()
-                .post("/api/clients/create")
+                .post(this.clientManagementApi)
                 .then()
                 .statusCode(HttpResponseCodes.SC_BAD_REQUEST);
     }
@@ -78,7 +78,7 @@ public class ClientControllerTest {
                 .contentType(ContentType.JSON)
                 .body("{\"firstName\": \"Jarlyn\", \"email\": \"jarlynpolanco@gmail.com\", \"address\": \"c/oval 2 #6\", \"phone\": \"8492832210\", \"country\": \"RDA\"}")
                 .when()
-                .post("/api/clients/create")
+                .post(this.clientManagementApi)
                 .then()
                 .statusCode(HttpResponseCodes.SC_BAD_REQUEST);
     }
@@ -89,7 +89,7 @@ public class ClientControllerTest {
                 .contentType(ContentType.JSON)
                 .body("{\"email\": \"jarlynpolanco@gmail.com\", \"address\": \"c/oval 2 #6\", \"phone\": \"8492832210\", \"country\": \"RDA\"}")
                 .when()
-                .post("/api/clients/create")
+                .post(this.clientManagementApi)
                 .then()
                 .statusCode(HttpResponseCodes.SC_BAD_REQUEST);
     }
@@ -98,7 +98,7 @@ public class ClientControllerTest {
     public void testGetAllClientsSuccessfully() {
         given()
                 .when()
-                .get("/api/clients/get-all")
+                .get(this.clientManagementApi + "/all")
                 .then()
                 .statusCode(HttpResponseCodes.SC_OK)
                 .body("$.size()", greaterThanOrEqualTo(1));
@@ -108,7 +108,7 @@ public class ClientControllerTest {
     public void testGetClientsByCountryWithNonDataOnRequestedCountryCodeSuccessfully() {
         given()
                 .when()
-                .get("/api/clients/by-country/LB")
+                .get(this.clientManagementApi + "/by-country/LB")
                 .then()
                 .statusCode(HttpResponseCodes.SC_OK)
                 .body("$.size()", is(0));
@@ -118,7 +118,7 @@ public class ClientControllerTest {
     public void testGetClientsByCountryWithNonExistentCountrySuccessfully() {
         given()
                 .when()
-                .get("/api/clients/by-country/LU")
+                .get(this.clientManagementApi + "/by-country/LU")
                 .then()
                 .statusCode(HttpResponseCodes.SC_OK)
                 .body("$.size()", is(0));
@@ -128,7 +128,7 @@ public class ClientControllerTest {
     public void testGetClientsByCountryWithWrongCountryCodeBadRequest() {
         given()
                 .when()
-                .get("/api/clients/by-country/LAKS")
+                .get(this.clientManagementApi + "/by-country/LAKS")
                 .then()
                 .statusCode(HttpResponseCodes.SC_BAD_REQUEST);
     }
@@ -138,7 +138,7 @@ public class ClientControllerTest {
         long clientId = 2077378909L;
         given()
                 .when()
-                .get("/api/clients/get-by/" + clientId)
+                .get(this.clientManagementApi + "/" + clientId)
                 .then()
                 .statusCode(HttpResponseCodes.SC_BAD_REQUEST);
     }
@@ -149,7 +149,7 @@ public class ClientControllerTest {
                 .contentType(ContentType.JSON)
                 .body("{\"email\": \"jarlynpolanco@outlook.com\", \"address\": \"C/Oval 2\", \"phone\": \"8492832210\", \"country\": \"US\"}")
                 .when()
-                .put("/api/clients/update-by/" + getClientId())
+                .put(this.clientManagementApi + "/" + getClientId())
                 .then()
                 .statusCode(HttpResponseCodes.SC_NO_CONTENT);
     }
@@ -160,7 +160,7 @@ public class ClientControllerTest {
                 .contentType(ContentType.JSON)
                 .body("{\"email\": \"jarlynpolanco@outlook.com\", \"address\": \"C/Oval 2\", \"phone\": \"849-283-2210\", \"country\": \"US\"}")
                 .when()
-                .put("/api/clients/update-by/" + getClientId())
+                .put(this.clientManagementApi + "/" + getClientId())
                 .then()
                 .statusCode(HttpResponseCodes.SC_BAD_REQUEST);
     }
@@ -172,7 +172,7 @@ public class ClientControllerTest {
                 .contentType(ContentType.JSON)
                 .body("{\"email\": \"jarlynpolancod@outlook.com\", \"address\": \"C/Oval 2\", \"phone\": \"8492832210\", \"country\": \"US\"}")
                 .when()
-                .put("/api/clients/update-by/" + clientId)
+                .put(this.clientManagementApi + "/" + clientId)
                 .then()
                 .statusCode(HttpResponseCodes.SC_BAD_REQUEST);
     }
@@ -182,7 +182,7 @@ public class ClientControllerTest {
         long clientId = 2077378909L;
         given()
                 .when()
-                .delete("/api/clients/delete-by/" + clientId)
+                .delete(this.clientManagementApi + "/" + clientId)
                 .then()
                 .statusCode(HttpResponseCodes.SC_BAD_REQUEST);
     }
@@ -191,7 +191,7 @@ public class ClientControllerTest {
     public void testDeleteClientSuccessfully() {
         given()
                 .when()
-                .delete("/api/clients/delete-by/" + getClientId())
+                .delete(this.clientManagementApi + "/" + getClientId())
                 .then()
                 .statusCode(HttpResponseCodes.SC_NO_CONTENT);
     }
@@ -199,7 +199,7 @@ public class ClientControllerTest {
     private Integer getClientId() {
         Response response = given()
                 .when()
-                .get("/api/clients/by-country/DO");
+                .get(this.clientManagementApi + "/by-country/DO");
         return (Integer) response.jsonPath().getList("Id").getFirst();
     }
 }
