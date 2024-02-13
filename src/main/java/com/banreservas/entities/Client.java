@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 @Table(name = "Clients")
 public class Client extends PanacheEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
     private String firstName;
     private String middleName;
     private String lastName;
@@ -20,6 +20,14 @@ public class Client extends PanacheEntity {
     private String phone;
     private String country;
     private String demonym;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(final Long id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;

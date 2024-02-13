@@ -22,7 +22,7 @@ public class ClientMapper {
 
     public static ClientResponseDto mapClientToDto(final Client client) {
         ClientResponseDto clientResponseDto = new ClientResponseDto();
-        clientResponseDto.Id = client.id;
+        clientResponseDto.Id = client.getId();
         clientResponseDto.firstName = client.getFirstName();
         clientResponseDto.middleName = client.getMiddleName();
         clientResponseDto.lastName = client.getLastName();

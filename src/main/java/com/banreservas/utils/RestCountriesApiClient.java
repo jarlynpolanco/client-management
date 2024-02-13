@@ -28,20 +28,19 @@ public class RestCountriesApiClient {
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-        if(response.statusCode() == HttpResponseCodes.SC_OK) {
-            String jsonResponse = response.body();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonNode = objectMapper.readTree(jsonResponse);
-
-            return jsonNode
-                    .get(0)
-                    .path("translations")
-                    .path("spa")
-                    .path("common")
-                    .asText();
-        } else {
+        if(response.statusCode() != HttpResponseCodes.SC_OK) {
             throw new NotFoundException("El codigo solicitado no fue encontrado.");
         }
 
+        String jsonResponse = response.body();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(jsonResponse);
+
+        return jsonNode
+                .get(0)
+                .path("translations")
+                .path("spa")
+                .path("common")
+                .asText();
     }
 }
