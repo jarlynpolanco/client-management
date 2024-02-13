@@ -4,8 +4,10 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "Clients")
 public class Client extends PanacheEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
